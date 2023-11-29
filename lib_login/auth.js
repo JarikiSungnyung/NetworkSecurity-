@@ -6,17 +6,17 @@ var db = require("./db");
 
 // 로그인 화면
 router.get("/login", function (request, response) {
-  var title = "로그인";
+  var title = "login";
   var html = template.HTML(
     title,
     `
-            <h2>로그인</h2>
+            <h2>login</h2>
             <form action="/auth/login_process" method="post">
-            <p><input class="login" type="text" name="username" placeholder="아이디"></p>
-            <p><input class="login" type="password" name="pwd" placeholder="비밀번호"></p>
-            <p><input class="btn" type="submit" value="로그인"></p>
+            <p><input class="login" type="text" name="username" placeholder="id"></p>
+            <p><input class="login" type="password" name="pwd" placeholder="pw"></p>
+            <p><input class="btn" type="submit" value="login"></p>
             </form>
-            <p>계정이 없으신가요?  <a href="/auth/register">회원가입</a></p>
+            <p>do not have id?  <a href="/auth/register">register</a></p>
         `,
     ""
   );
@@ -40,12 +40,12 @@ router.post("/login_process", function (request, response) {
           response.redirect(`/`);
         });
       } else {
-        response.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다.");
+        response.send(`<script type="text/javascript">alert("Login information does not match.");
                 document.location.href="/auth/login";</script>`);
       }
     });
   } else {
-    response.send(`<script type="text/javascript">alert("아이디와 비밀번호를 입력하세요!");
+    response.send(`<script type="text/javascript">alert("Please enter your ID and password!");
         document.location.href="/auth/login";</script>`);
   }
 });
@@ -59,18 +59,18 @@ router.get("/logout", function (request, response) {
 
 // 회원가입 화면
 router.get("/register", function (request, response) {
-  var title = "회원가입";
+  var title = "register";
   var html = template.HTML(
     title,
     `
-    <h2>회원가입</h2>
+    <h2>register</h2>
     <form action="/auth/register_process" method="post">
-    <p><input class="login" type="text" name="username" placeholder="아이디"></p>
-    <p><input class="login" type="password" name="pwd" placeholder="비밀번호"></p>
-    <p><input class="login" type="password" name="pwd2" placeholder="비밀번호 재확인"></p>
-    <p><input class="btn" type="submit" value="제출"></p>
+    <p><input class="login" type="text" name="username" placeholder="id"></p>
+    <p><input class="login" type="password" name="pwd" placeholder="pw"></p>
+    <p><input class="login" type="password" name="pwd2" placeholder="pw check"></p>
+    <p><input class="btn" type="submit" value="submit"></p>
     </form>
-    <p><a href="/auth/login">로그인화면으로 돌아가기</a></p>
+    <p><a href="/auth/login">back to login page</a></p>
     `,
     ""
   );
@@ -91,22 +91,22 @@ router.post("/register_process", function (request, response) {
         // DB에 같은 이름의 회원아이디가 없고, 비밀번호가 올바르게 입력된 경우
         db.query("INSERT INTO usertable (username, password) VALUES(?,?)", [username, password], function (error, data) {
           if (error) throw error2;
-          response.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
+          response.send(`<script type="text/javascript">alert("registration is complete!");
                     document.location.href="/";</script>`);
         });
       } else if (password != password2) {
         // 비밀번호가 올바르게 입력되지 않은 경우
-        response.send(`<script type="text/javascript">alert("입력된 비밀번호가 서로 다릅니다.");
+        response.send(`<script type="text/javascript">alert("The password entered is different.");
                 document.location.href="/auth/register";</script>`);
       } else {
         // DB에 같은 이름의 회원아이디가 있는 경우
-        response.send(`<script type="text/javascript">alert("이미 존재하는 아이디 입니다.");
+        response.send(`<script type="text/javascript">alert("This is an ID that already exists.");
                 document.location.href="/auth/register";</script>`);
       }
     });
   } else {
     // 입력되지 않은 정보가 있는 경우
-    response.send(`<script type="text/javascript">alert("입력되지 않은 정보가 있습니다.");
+    response.send(`<script type="text/javascript">alert("There is information that has not been entered.");
         document.location.href="/auth/register";</script>`);
   }
 });

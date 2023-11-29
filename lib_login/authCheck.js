@@ -7,9 +7,9 @@ module.exports = {
     }
   },
   statusUI: function (request, response) {
-    var authStatusUI = "로그인후 사용 가능합니다";
+    var authStatusUI = "login please";
     if (this.isOwner(request, response)) {
-      authStatusUI = `${request.session.nickname}님 환영합니다 | <a href="/auth/logout">로그아웃</a>`;
+      authStatusUI = `Welcome ${request.session.nickname}! | <a href="/auth/logout">logout</a>`;
     }
     return authStatusUI;
   },
